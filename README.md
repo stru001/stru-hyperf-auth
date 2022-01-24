@@ -45,7 +45,111 @@ public function getAuthPassword(): string
 
 #### Use
 ```
+// 正常添加控制器（LoginController），在控制器中加入如下方法
+/**
+ * @Inject
+ * @var ContainerInterface
+ */
+protected $container;
+/**
+ * @Inject
+ * @var RequestInterface
+ */
+protected $request;
+/**
+ * @Inject
+ * @var ResponseInterface
+ */
+protected $response;
+/**
+ * @Inject
+ * @var ValidatorFactoryInterface
+ */
+protected $validationFactory;
+/**
+ * @Inject
+ * @var AuthManager
+ */
+protected $auth;
 
+/**
+ * @return mixed
+ * @RequestMapping(path="login",methods="GET")
+ */
+public function showLogin()
+{
+    return view('auth.login',[]);
+}
+
+/**
+ * @return mixed
+ * @RequestMapping(path="login",methods="POST")
+ */
+public function login()
+{
+
+    if ($errMessage = $this->validateLogin()){
+        return $this->response->json([$errMessage]);
+    }
+    $email = $this->request->input('email','');
+    $password = $this->request->input('password','');
+
+    if(! $this->auth->guard()->attempt(['email' => $email,'password' =>$password]))
+    {
+        return view('auth.login',[
+            'error_message' => '用户不存在或密码错误'
+        ]);
+    }
+    return $this->response->redirect('/home');
+}
+
+/**
+ * @return mixed
+ * @RequestMapping(path="register",methods="GET")
+ */
+public function showRegister()
+{
+    return view('auth.register');
+}
+
+/**
+ * @return mixed
+ * @RequestMapping(path="register",methods="POST")
+ */
+public function register()
+{
+    return $this->request->all();
+}
+
+/**
+ * @return mixed
+ * @RequestMapping(path="logout",methods="POST")
+ */
+public function logout()
+{
+    $this->auth->guard('session')->logout();
+    return $this->response->redirect('/auth/login');
+}
+
+public function guard()
+{
+
+}
+
+private function validateLogin()
+{
+    $validator = $this->validationFactory->make(
+        $this->request->all(),
+        [
+            'email' => 'required|email',
+            'password' => 'required|string'
+        ]
+    );
+    if ($validator->fails()){
+        return $validator->errors()->first();
+    }
+    return null;
+}
 ```
 
 
