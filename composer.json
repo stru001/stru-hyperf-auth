@@ -1,0 +1,32 @@
+{
+    "name": "stru/stru-hyperf-auth",
+    "description": "集成到Hyperf中类似 Laravel 的 Auth 组件， 配合 stru/stru-hyperf-ui 使用可提供界面",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Stru\\StruHyperfAuth\\": "src/"
+        },
+        "files": [
+            "src/helper.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "stru",
+            "email": "struphp@sina.com"
+        }
+    ],
+    "require": {
+        "hyperf/session": "^2.2",
+        "hyperf/db-connection": "^2.2",
+        "hyperf/translation": "^2.2"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.0-dev"
+        },
+        "hyperf": {
+            "config": "Stru\\StruHyperfAuth\\ConfigProvider"
+        }
+    }
+}
