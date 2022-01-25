@@ -45,7 +45,13 @@ public function getAuthPassword(): string
 
 #### Use
 ```
-// 正常添加控制器（LoginController），在控制器中加入如下方法
+// 在使用登录注册视图之前要先安装 “stru/stru-hyperf-ui” 具体使用方法详见其文档，同时要取消如下注释
+1. resources/views/layouts/app.blade.php
+    38，45，48，58 行注释取消
+2. resources/views/home.blade.php
+    69，71，74 行的注释取消
+
+// 添加控制器（LoginController），在控制器编写如下代码
 /**
  * @Inject
  * @var ContainerInterface
@@ -78,7 +84,7 @@ protected $auth;
  */
 public function showLogin()
 {
-    return view('auth.login',[]);
+    return view('auth.login');
 }
 
 /**
