@@ -13,6 +13,7 @@ composer require stru/stru-hyperf-auth
 
 #### Publish
 ```
+php bin/hyperf.php vendor:publish hyperf/session
 php bin/hyperf.php vendor:publish stru/stru-hyperf-auth
 ```
 
