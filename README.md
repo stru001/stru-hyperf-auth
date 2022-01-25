@@ -25,6 +25,7 @@ php bin/hyperf.php migrate
 ```
 // config/authload/middlewares.php 添加session
 \Hyperf\Session\Middleware\SessionMiddleware::class,
+\Hyperf\Validation\Middleware\ValidationMiddleware::class,
 
 // config/authload/exceptions.php 添加异常处理
 \Stru\StruHyperfAuth\AuthExceptionHandler::class,

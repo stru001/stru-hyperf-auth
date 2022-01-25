@@ -103,6 +103,29 @@ class SessionGuard implements Guard
         return false;
     }
 
+    public function checkRegister(array $params = [])
+    {
+        if (is_null($params)){
+            return false;
+        }
+        $data = [
+            'name' => $params['name'],
+            'account' => $params['name'] . substr(time(),6),
+            'email' => $params['email'],
+            'password' => password_hash($params['password'],PASSWORD_DEFAULT )
+        ];
+        if($this->register($data))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public function register(array $userInfo)
+    {
+        $this->provider->createUser($userInfo);
+    }
+
     public function login(Authenticatable $user)
     {
         $this->updateSession($user->getAuthIdentifier());

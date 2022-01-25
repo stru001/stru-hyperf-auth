@@ -19,7 +19,8 @@
     "require": {
         "hyperf/session": "^2.2",
         "hyperf/db-connection": "^2.2",
-        "hyperf/translation": "^2.2"
+        "hyperf/translation": "^2.2",
+        "hyperf/validation": "^2.2"
     },
     "extra": {
         "branch-alias": {

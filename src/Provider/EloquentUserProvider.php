@@ -101,4 +101,8 @@ class EloquentUserProvider implements UserProvider
     }
 
 
+    public function createUser(array $data)
+    {
+        return $this->model->create($data);
+    }
 }

@@ -51,6 +51,13 @@ interface Guard
     public function attempt(array $credentials = []);
 
     /**
+     * 验证注册 并 执行注册
+     * @param array $params
+     * @return mixed
+     */
+    public function checkRegister(array $params);
+
+    /**
      * 登录
      * @param Authenticatable $user
      * @return mixed

@@ -27,4 +27,11 @@ interface UserProvider
      * @return mixed
      */
     public function validateCredentials(Authenticatable $user,array $credentials);
+
+    /**
+     * 添加用户
+     * @param array $params
+     * @return mixed
+     */
+    public function createUser(array $params);
 }
