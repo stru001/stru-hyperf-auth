@@ -16,6 +16,11 @@ composer require stru/stru-hyperf-auth
 php bin/hyperf.php vendor:publish stru/stru-hyperf-auth
 ```
 
+#### Database
+```
+php bin/hyperf.php migrate
+```
+
 #### Config
 ```
 // config/authload/middlewares.php 添加session
@@ -24,9 +29,8 @@ php bin/hyperf.php vendor:publish stru/stru-hyperf-auth
 // config/authload/exceptions.php 添加异常处理
 \Stru\StruHyperfAuth\AuthExceptionHandler::class,
 
-// App\Model\User.php
-1. 实现接口 Authenticatable
-2. 添加代码
+// 添加模型 App\Model\User.php  [数据库在上面设置中通过migrate发布]
+1. 实现接口 Authenticatable 添加如下代码
 public function getAuthIdentifierName(): string
 {
     return $this->getKeyName();

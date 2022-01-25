@@ -15,7 +15,7 @@ return [
     ],
     'providers' => [
         'users' => [
-            'driver' => Stru\StruHyperfAuth\Provider\EloquentProvider::class,
+            'driver' => Stru\StruHyperfAuth\Provider\EloquentUserProvider::class,
             'model' => App\Model\User::class,
         ],
     ],

@@ -32,6 +32,12 @@ class ConfigProvider
                     'source' => __DIR__ . '/../config/auth.php',
                     'destination' => BASE_PATH . '/config/autoload/auth.php',
                 ],
+                [
+                    'id' => 'migration',
+                    'description' => 'The migration for oauth.',
+                    'source' => __DIR__ . '/../database/migrations/2022_01_14_000001_create_users_table.php',
+                    'destination' => BASE_PATH . '/migrations/2022_01_14_000001_create_users_table.php',
+                ],
             ],
         ];
     }
