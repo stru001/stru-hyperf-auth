@@ -103,6 +103,16 @@ class EloquentUserProvider implements UserProvider
 
     public function createUser(array $data)
     {
-        return $this->model->create($data);
+        $query = $this->newModelQuery();
+        $user = $query->where('account', $data['account'])
+            ->orWhere('email', $data['email'])
+            ->orWhere('mobile', $data['mobile'])
+            ->first();
+        if ($user){
+            return false;
+        }
+        $model = $this->createModel();
+        $model->create($data);
+        return true;
     }
 }

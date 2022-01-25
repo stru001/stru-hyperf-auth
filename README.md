@@ -31,7 +31,9 @@ php bin/hyperf.php migrate
 \Stru\StruHyperfAuth\AuthExceptionHandler::class,
 
 // 添加模型 App\Model\User.php  [数据库在上面设置中通过migrate发布]
-1. 实现接口 Authenticatable 添加如下代码
+1. 如果要实现注册在模型下添加
+protected $fillable = ['name','account','email','password','mobile'];
+2. 要使用验证 需实现接口 Authenticatable，添加如下代码
 public function getAuthIdentifierName(): string
 {
     return $this->getKeyName();

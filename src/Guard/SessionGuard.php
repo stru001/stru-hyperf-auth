@@ -112,10 +112,10 @@ class SessionGuard implements Guard
             'name' => $params['name'],
             'account' => $params['name'] . substr(time(),6),
             'email' => $params['email'],
-            'password' => password_hash($params['password'],PASSWORD_DEFAULT )
+            'password' => password_hash($params['password'],PASSWORD_DEFAULT ),
+            'mobile' => '1'. substr('356789',random_int(0,5),1) . substr(time(),1),
         ];
-        if($this->register($data))
-        {
+        if($this->register($data)){
             return true;
         }
         return false;
@@ -123,7 +123,7 @@ class SessionGuard implements Guard
 
     public function register(array $userInfo)
     {
-        $this->provider->createUser($userInfo);
+        return $this->provider->createUser($userInfo);
     }
 
     public function login(Authenticatable $user)
