@@ -47,6 +47,15 @@ class SessionGuard implements Guard
         return 'login_' . $this->name . '_' . sha1(static::class);
     }
 
+    public function check(): bool
+    {
+        try {
+            return $this->user() instanceof Authenticatable;
+        } catch (AuthException $exception) {
+            return false;
+        }
+    }
+
     /**
      * 获取当前已经验证过的用户
      * @return mixed|Authenticatable|null
@@ -72,8 +81,8 @@ class SessionGuard implements Guard
             return null;
         }
         return $this->user()
-                        ? $this->user()->getAuthIdentifier()
-                        : $this->session->get($this->getName());
+            ? $this->user()->getAuthIdentifier()
+            : $this->session->get($this->getName());
     }
 
     /**

@@ -7,18 +7,17 @@ declare(strict_types=1);
 namespace Stru\StruHyperfAuth\Exception;
 
 use Stru\StruHyperfAuth\Guard;
-use Throwable;
 
 class UnauthorizedException extends AuthException
 {
-    protected $guard;
+    protected $guards;
 
     protected $statusCode = 401;
 
-    public function __construct(string $message, Guard $guard = null, Throwable $previous = null)
+    public function __construct(string $message, Guard $guard = null, $redirectTo = null)
     {
-        parent::__construct($message, 401, $previous);
-        $this->guard = $guard;
+        parent::__construct($message, $redirectTo);
+        $this->guards = $guard;
     }
 
     public function getStatusCode(): int

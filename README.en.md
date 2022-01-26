@@ -67,6 +67,7 @@ public function getAuthPassword(): string
 namespace App\Controller\Auth;
 
 use Hyperf\Contract\ContainerInterface;
+use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
@@ -109,6 +110,11 @@ class LoginController
      */
     protected $auth;
     /**
+     * @Inject()
+     * @var SessionInterface
+     */
+    protected $session;
+    /**
      * @RequestMapping(path="login",methods="GET")
      */
     public function showLogin()
@@ -135,7 +141,7 @@ class LoginController
                 'error_message' => '用户不存在或密码错误'
             ]);
         }
-        return $this->response->redirect('/home');
+        return $this->sendLoginResponse();
     }
     /**
      * @RequestMapping(path="register",methods="GET")
@@ -170,6 +176,12 @@ class LoginController
     {
         $this->auth->guard()->logout();
         return $this->response->redirect('/auth/login');
+    }
+
+    protected function sendLoginResponse()
+    {
+        $path = $this->session->get('url:auth_before');
+        return $path ? $this->response->redirect($path) : $this->response->redirect('/home');
     }
 
     private function validateLogin()

@@ -95,4 +95,11 @@ class AuthManager
     {
         return $this->config['default']['guard'] ?? $this->defaultDriver;
     }
+
+    public function shouldUse($name)
+    {
+        $name = $name ?: $this->defaultGuard();
+
+        return $this->guard($name)->user();
+    }
 }
