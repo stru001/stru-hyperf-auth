@@ -187,8 +187,6 @@ class JwtGuard implements Guard
      */
     public function logout(bool $forceForever = false)
     {
-        $user = $this->user();
-
         $this->requireToken()->invalidate($forceForever);
 
         $this->user = null;
@@ -330,9 +328,7 @@ class JwtGuard implements Guard
         if ($this->loggedOut){
             return null;
         }
-        return $this->user()
-            ? $this->user()->getAuthIdentifier()
-            : $this->session->get($this->getName());
+        return $this->user() ? $this->user()->getAuthIdentifier() : 0;
     }
 
     public function checkRegister(array $params)
