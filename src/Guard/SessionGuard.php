@@ -4,6 +4,7 @@ namespace Stru\StruHyperfAuth\Guard;
 
 use Hyperf\Contract\SessionInterface;
 use Stru\StruHyperfAuth\Authenticatable;
+use Stru\StruHyperfAuth\Exception\AuthException;
 use Stru\StruHyperfAuth\Guard;
 use Stru\StruHyperfAuth\UserProvider;
 
@@ -143,7 +144,6 @@ class SessionGuard implements Guard
 
     public function logout()
     {
-        $user = $this->user();
         $this->clearUserDataFromStorage();
         $this->user = null;
         $this->loggedOut = true;

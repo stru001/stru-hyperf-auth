@@ -12,6 +12,10 @@ return [
             'driver' => Stru\StruHyperfAuth\Guard\SessionGuard::class,
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => Stru\StruHyperfAuth\Guard\JwtGuard::class,
+            'provider' => 'users',
+        ],
     ],
     'providers' => [
         'users' => [

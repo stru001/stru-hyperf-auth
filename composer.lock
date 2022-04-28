@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed05bb831061a8e27b6e709d728d56f8",
+    "content-hash": "638cd3c3e0e152643cbeeb6ee781d083",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -499,6 +499,209 @@
                 }
             ],
             "time": "2021-11-21T21:41:47+00:00"
+        },
+        {
+            "name": "hyperf-ext/jwt",
+            "version": "v2.2.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/hyperf-ext/jwt/v2.2.1/hyperf-ext-jwt-v2.2.1.zip",
+                "reference": "ef9d8938e4a1838632202a33b0f4e2ab01146769",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "ext-swoole": ">=4.5",
+                "hyperf/cache": "^2.1",
+                "hyperf/command": "^2.1",
+                "hyperf/config": "^2.1",
+                "hyperf/di": "^2.1",
+                "hyperf/framework": "^2.1",
+                "lcobucci/jwt": "~4.1.0",
+                "nesbot/carbon": "^2.0",
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "hyperf/testing": "^2.1",
+                "mockery/mockery": "^1.0",
+                "phpstan/phpstan": "^0.12",
+                "swoole/ide-helper": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "hyperf": {
+                    "config": "HyperfExt\\Jwt\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "HyperfExt\\Jwt\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eric Zhu",
+                    "email": "eric@zhu.email"
+                },
+                {
+                    "name": "Sean Tymon",
+                    "email": "tymon148@gmail.com",
+                    "homepage": "https://tymon.xyz",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Hyperf JWT package.",
+            "keywords": [
+                "auth",
+                "hyperf",
+                "jwt",
+                "php"
+            ],
+            "time": "2021-08-11T19:13:25+00:00"
+        },
+        {
+            "name": "hyperf/cache",
+            "version": "v2.2.15",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/hyperf/cache/v2.2.15/hyperf-cache-v2.2.15.zip",
+                "reference": "3bafd85dae6f333567231339a9019cea35457379",
+                "shasum": ""
+            },
+            "require": {
+                "hyperf/contract": "~2.2.0",
+                "hyperf/utils": "~2.2.0",
+                "php": ">=7.2",
+                "psr/container": "^1.0|^2.0",
+                "psr/simple-cache": "^1.0"
+            },
+            "suggest": {
+                "hyperf/di": "Use cache annotations.",
+                "hyperf/event": "Use listener to delete annotation cache."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                },
+                "hyperf": {
+                    "config": "Hyperf\\Cache\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hyperf\\Cache\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A cache component for hyperf.",
+            "homepage": "https://hyperf.io",
+            "keywords": [
+                "cache",
+                "hyperf",
+                "php"
+            ],
+            "time": "2021-11-02T10:34:27+00:00"
+        },
+        {
+            "name": "hyperf/command",
+            "version": "v2.2.9",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/hyperf/command/v2.2.9/hyperf-command-v2.2.9.zip",
+                "reference": "eb15924c33532e9eced5c7401f94e064324ed03e",
+                "shasum": ""
+            },
+            "require": {
+                "hyperf/utils": "~2.2.0",
+                "php": ">=7.2",
+                "psr/event-dispatcher": "^1.0",
+                "symfony/console": "^5.0"
+            },
+            "suggest": {
+                "hyperf/di": "Required to use annotations."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hyperf\\Command\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Command for hyperf",
+            "keywords": [
+                "command",
+                "php",
+                "swoole"
+            ],
+            "time": "2021-09-16T07:20:30+00:00"
+        },
+        {
+            "name": "hyperf/config",
+            "version": "v2.2.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/hyperf/config/v2.2.0/hyperf-config-v2.2.0.zip",
+                "reference": "ccdcc79ec244612c04f186e65b222ad778db75e9",
+                "shasum": ""
+            },
+            "require": {
+                "hyperf/contract": "~2.2.0",
+                "hyperf/utils": "~2.2.0",
+                "php": ">=7.2",
+                "psr/container": "^1.0|^2.0",
+                "symfony/finder": "^5.0"
+            },
+            "suggest": {
+                "hyperf/di": "Allows using @Value annotation",
+                "hyperf/event": "Allows using @Value annotation",
+                "hyperf/framework": "Allows using @Value annotation",
+                "vlucas/phpdotenv": "Allows using enviroment value to override the config"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                },
+                "hyperf": {
+                    "config": "Hyperf\\Config\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "./src/Functions.php"
+                ],
+                "psr-4": {
+                    "Hyperf\\Config\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "An independent component that provides configuration container.",
+            "homepage": "https://hyperf.io",
+            "keywords": [
+                "config",
+                "configuration",
+                "hyperf",
+                "php",
+                "swoole"
+            ],
+            "time": "2021-07-18T06:50:14+00:00"
         },
         {
             "name": "hyperf/contract",
@@ -1702,6 +1905,101 @@
             "time": "2022-01-21T15:50:46+00:00"
         },
         {
+            "name": "lcobucci/clock",
+            "version": "2.0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/lcobucci/clock/2.0.0/lcobucci-clock-2.0.0.zip",
+                "reference": "353d83fe2e6ae95745b16b3d911813df6a05bfb3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "infection/infection": "^0.17",
+                "lcobucci/coding-standard": "^6.0",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-deprecation-rules": "^0.12",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpunit/php-code-coverage": "9.1.4",
+                "phpunit/phpunit": "9.3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lcobucci\\Clock\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luís Cobucci",
+                    "email": "lcobucci@gmail.com"
+                }
+            ],
+            "description": "Yet another clock abstraction",
+            "time": "2020-08-27T18:56:02+00:00"
+        },
+        {
+            "name": "lcobucci/jwt",
+            "version": "4.1.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/lcobucci/jwt/4.1.5/lcobucci-jwt-4.1.5.zip",
+                "reference": "fe2d89f2eaa7087af4aa166c6f480ef04e000582",
+                "shasum": ""
+            },
+            "require": {
+                "ext-hash": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "ext-sodium": "*",
+                "lcobucci/clock": "^2.0",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "infection/infection": "^0.21",
+                "lcobucci/coding-standard": "^6.0",
+                "mikey179/vfsstream": "^1.6.7",
+                "phpbench/phpbench": "^1.0",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-deprecation-rules": "^0.12",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpunit/php-invoker": "^3.1",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lcobucci\\JWT\\": "src"
+                }
+            },
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Luís Cobucci",
+                    "email": "lcobucci@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to work with JSON Web Token and JSON Web Signature",
+            "keywords": [
+                "JWS",
+                "jwt"
+            ],
+            "time": "2021-09-28T19:34:56+00:00"
+        },
+        {
             "name": "nesbot/carbon",
             "version": "2.55.2",
             "source": {
@@ -2384,6 +2682,48 @@
                 "source": "https://github.com/php-fig/log/tree/1.1.4"
             },
             "time": "2021-05-03T11:20:27+00:00"
+        },
+        {
+            "name": "psr/simple-cache",
+            "version": "1.0.1",
+            "dist": {
+                "type": "zip",
+                "url": "https://mirrors.tencent.com/repository/composer/psr/simple-cache/1.0.1/psr-simple-cache-1.0.1.zip",
+                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\SimpleCache\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interfaces for simple caching",
+            "keywords": [
+                "cache",
+                "caching",
+                "psr",
+                "psr-16",
+                "simple-cache"
+            ],
+            "time": "2017-10-23T01:57:42+00:00"
         },
         {
             "name": "symfony/console",
