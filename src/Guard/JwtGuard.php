@@ -6,7 +6,6 @@ namespace Stru\StruHyperfAuth\Guard;
 
 use BadMethodCallException;
 use Hyperf\HttpServer\Contract\RequestInterface;
-use HyperfExt\Jwt\Contracts\JwtSubjectInterface;
 use HyperfExt\Jwt\Exceptions\JwtException;
 use HyperfExt\Jwt\Exceptions\UserNotDefinedException;
 use HyperfExt\Jwt\Jwt;
@@ -15,13 +14,13 @@ use HyperfExt\Jwt\Payload;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Stru\StruHyperfAuth\Authenticatable;
-use Stru\StruHyperfAuth\EventHelpers;
+use Stru\StruHyperfAuth\Exception\AuthException;
 use Stru\StruHyperfAuth\Guard;
 use Stru\StruHyperfAuth\UserProvider;
 
 class JwtGuard implements Guard
 {
-    use EventHelpers, GuardHelpers, Macroable {
+    use GuardHelpers, Macroable {
         __call as macroCall;
     }
 
@@ -60,6 +59,8 @@ class JwtGuard implements Guard
      * @var \Psr\EventDispatcher\EventDispatcherInterface
      */
     protected $eventDispatcher;
+
+    protected $loggedOut = false;
 
     /**
      * Instantiate the class.
@@ -111,7 +112,6 @@ class JwtGuard implements Guard
             $this->validateSubject() and
             ($this->user = $this->provider->retrieveById($payload['sub']))
         ) {
-            $this->dispatchAuthenticatedEvent($this->user);
             return $this->user;
         }
 
@@ -139,7 +139,6 @@ class JwtGuard implements Guard
 
     public function attempt(array $credentials = [], bool $login = true)
     {
-        $this->dispatchAttemptingEvent($credentials);
 
         $this->lastAttempted = $user = $this->provider->retrieveByCredentials($credentials);
 
@@ -147,14 +146,11 @@ class JwtGuard implements Guard
             return $login ? $this->login($user) : true;
         }
 
-        $this->dispatchFailedEvent($user, $credentials);
-
         return false;
     }
 
     public function once(array $credentials = []): bool
     {
-        $this->dispatchAttemptingEvent($credentials);
 
         if ($this->validate($credentials)) {
             $this->setUser($this->lastAttempted);
@@ -169,8 +165,6 @@ class JwtGuard implements Guard
     {
         $token = $this->jwt->fromUser($user);
         $this->setToken($token)->setUser($user);
-
-        $this->dispatchLoginEvent($user);
 
         return $token;
     }
@@ -196,8 +190,6 @@ class JwtGuard implements Guard
         $user = $this->user();
 
         $this->requireToken()->invalidate($forceForever);
-
-        $this->dispatchLogoutEvent($user);
 
         $this->user = null;
         $this->jwt->unsetToken();
@@ -285,8 +277,6 @@ class JwtGuard implements Guard
     {
         $this->user = $user;
 
-        $this->dispatchAuthenticatedEvent($user);
-
         return $this;
     }
 
@@ -307,10 +297,6 @@ class JwtGuard implements Guard
     {
         $validated = ($user !== null and $this->provider->validateCredentials($user, $credentials));
 
-        if ($validated) {
-            $this->dispatchValidatedEvent($user);
-        }
-
         return $validated;
     }
 
@@ -330,6 +316,48 @@ class JwtGuard implements Guard
         return $this->jwt->checkSubjectModel($this->provider->getModel());
     }
 
+    public function check()
+    {
+        try {
+            return $this->user() instanceof Authenticatable;
+        } catch (AuthException $exception) {
+            return false;
+        }
+    }
+
+    public function id()
+    {
+        if ($this->loggedOut){
+            return null;
+        }
+        return $this->user()
+            ? $this->user()->getAuthIdentifier()
+            : $this->session->get($this->getName());
+    }
+
+    public function checkRegister(array $params)
+    {
+        if (is_null($params)){
+            return false;
+        }
+        $data = [
+            'name' => $params['name'],
+            'account' => $params['name'] . substr(time(),6),
+            'email' => $params['email'],
+            'password' => password_hash($params['password'],PASSWORD_DEFAULT ),
+            'mobile' => '1'. substr('356789',random_int(0,5),1) . substr(time(),1),
+        ];
+        if($this->register($data)){
+            return true;
+        }
+        return false;
+    }
+
+    public function register(array $userInfo)
+    {
+        return $this->provider->createUser($userInfo);
+    }
+
     /**
      * Ensure that a token is available in the request.
      *
@@ -342,25 +370,5 @@ class JwtGuard implements Guard
         }
 
         return $this->jwt;
-    }
-
-    public function check()
-    {
-        // TODO: Implement check() method.
-    }
-
-    public function guest()
-    {
-        // TODO: Implement guest() method.
-    }
-
-    public function id()
-    {
-        // TODO: Implement id() method.
-    }
-
-    public function checkRegister(array $params)
-    {
-        // TODO: Implement checkRegister() method.
     }
 }
