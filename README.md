@@ -1,9 +1,7 @@
 # stru-hyperf-auth
 
 #### Description
-```
-类似实现laravel auth,仅实现了session登录验证，其他方式可自行实现
-```
+> 类似laravel auth,实现了session,jwt登录验证，其他方式可自行实现。jwt使用了[hyperf-ext/jwt](https://github.com/hyperf-ext/jwt) 现成的方法进行了集成，在此表示感谢。
 
 
 #### Installation
@@ -15,6 +13,8 @@ composer require stru/stru-hyperf-auth
 ```
 php bin/hyperf.php vendor:publish hyperf/session
 php bin/hyperf.php vendor:publish stru/stru-hyperf-auth
+// jwt 新增发布
+php bin/hyperf.php vendor:publish hyperf-ext/jwt
 ```
 
 #### Database
@@ -50,6 +50,16 @@ public function getAuthPassword(): string
 {
     return $this->password;
 }
+4. 补充jwt实现后在原基础上还需要实现 HyperfExt\Jwt\Contracts\JwtSubjectInterface 并添加如下方法
+  public function getJwtIdentifier()
+    {
+        return $this->getKeyName();
+    }
+
+    public function getJwtCustomClaims(): array
+    {
+        return [];
+    }
 ```
 
 #### Use
@@ -219,6 +229,50 @@ class LoginController
             return $validator->errors()->first();
         }
         return null;
+    }
+    
+    // jwt 变更，目前只写了登录，其他的可自行实现
+    /**
+    * @RequestMapping(path="login",methods="POST")
+    */
+    public function login()
+    {
+        [$errMessage, $errs] = $this->validateLogin();
+        if ($errMessage){
+            return $this->responseFail($errMessage, json_decode($errs, true));
+        }
+        $account = $this->request->input('account','');
+        $password = $this->request->input('password','');
+        // 验证用户存在
+        $user = User::where('account', $account)->first();
+        if (!$user){
+            return $this->responseFail("用户不存在", []);
+        }
+        // 验证密码
+        if(!$token = $this->auth->guard()->attempt(['account' => $account,'password' => $password])) {
+            return $this->responseFail("密码错误", []);
+        }
+        return $this->sendLoginResponse($token);
+    }
+    
+    /**
+    * @RequestMapping(path="logout",methods="POST")
+    */
+    public function logout()
+    {
+        $this->auth->guard()->logout();
+        return $this->responseSuccess();
+    }
+
+    protected function sendLoginResponse(string $token)
+    {
+        $user = $this->auth->guard()->user()->toArray();
+        unset($user['password']);
+        
+        return $this->responseData([
+            'user' => $user,
+            'token' => $token
+        ]);
     }
 }
 ```

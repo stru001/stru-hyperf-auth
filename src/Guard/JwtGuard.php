@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace Stru\StruHyperfAuth\Guard;
 
-use BadMethodCallException;
-use Hyperf\HttpServer\Contract\RequestInterface;
 use HyperfExt\Jwt\Exceptions\JwtException;
 use HyperfExt\Jwt\Exceptions\UserNotDefinedException;
 use HyperfExt\Jwt\Jwt;
 use HyperfExt\Jwt\JwtFactory;
 use HyperfExt\Jwt\Payload;
-use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Stru\StruHyperfAuth\Authenticatable;
 use Stru\StruHyperfAuth\Exception\AuthException;
 use Stru\StruHyperfAuth\Guard;
@@ -20,18 +16,17 @@ use Stru\StruHyperfAuth\UserProvider;
 
 class JwtGuard implements Guard
 {
-    use GuardHelpers, Macroable {
-        __call as macroCall;
-    }
+    use GuardHelpers, Macroable;
 
     /**
-     * The name of the Guard. Typically "jwt".
-     *
-     * Corresponds to guard name in authentication configuration.
-     *
      * @var string
      */
     protected $name;
+
+    /**
+     * @var array
+     */
+    protected $config;
 
     /**
      * The user we last attempted to retrieve.
@@ -41,24 +36,9 @@ class JwtGuard implements Guard
     protected $lastAttempted;
 
     /**
-     * @var \Hyperf\Contract\ContainerInterface
-     */
-    protected $container;
-
-    /**
      * @var \HyperfExt\Jwt\Jwt
      */
     protected $jwt;
-
-    /**
-     * @var \Hyperf\HttpServer\Contract\RequestInterface
-     */
-    protected $request;
-
-    /**
-     * @var \Psr\EventDispatcher\EventDispatcherInterface
-     */
-    protected $eventDispatcher;
 
     protected $loggedOut = false;
 
@@ -66,39 +46,15 @@ class JwtGuard implements Guard
      * Instantiate the class.
      */
     public function __construct(
-        ContainerInterface $container,
-        RequestInterface $request,
-        JwtFactory $jwtFactory,
-        EventDispatcherInterface $eventDispatcher,
+        $name,
+        $config,
         UserProvider $provider,
-        string $name
+        JwtFactory $jwtFactory
     ) {
-        $this->container = $container;
-        $this->request = $request;
         $this->jwt = $jwtFactory->make();
-        $this->eventDispatcher = $eventDispatcher;
         $this->provider = $provider;
+        $this->config = $config;
         $this->name = $name;
-    }
-
-    /**
-     * Magically call the JWT instance.
-     *
-     * @throws BadMethodCallException
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $parameters)
-    {
-        if (method_exists($this->jwt, $method)) {
-            return call_user_func_array([$this->jwt, $method], $parameters);
-        }
-
-        if (static::hasMacro($method)) {
-            return $this->macroCall($method, $parameters);
-        }
-
-        throw new BadMethodCallException("Method [{$method}] does not exist.");
     }
 
     public function user(): ?Authenticatable
@@ -139,7 +95,6 @@ class JwtGuard implements Guard
 
     public function attempt(array $credentials = [], bool $login = true)
     {
-
         $this->lastAttempted = $user = $this->provider->retrieveByCredentials($credentials);
 
         if ($this->hasValidCredentials($user, $credentials)) {
